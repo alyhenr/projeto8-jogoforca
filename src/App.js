@@ -1,24 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+
+import Letras from "./Components/Letras";
+import Jogo from "./Components/Jogo";
+import imgsArr from './imgs';
 
 function App() {
+  const [indexImg, setIndexImg] = useState(0);
+  const [gameOn, setGameOn] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Jogo currentImg={imgsArr[indexImg]} />
+      <Letras gameOn={gameOn} />
+    </>
   );
 }
 
