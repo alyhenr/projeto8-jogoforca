@@ -1,40 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 
-const alfabeto = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
-    "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+const Letra = ({ gameOn, handleChoice, letter, clicked }) => {
+    const Letter = styled.button`
+        width: 40px;
+        height: 40px;
+        background: ${gameOn ? "#E1ECF4" : "#9FAAB5"};
+        border: 1px solid #7AA7C7;
+        border-radius: 3px;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-size: 16px;
+        font-weight: 700;
+        color: ${gameOn ? "#39739D" : "#798A9F"};
+        cursor: pointer;
+    `;
 
-const Wrapper = styled.div`
-    display: flex;
-    justify: flex-start;
-    width: 665px;
-    height: 95px;
-    margin: 0 auto;
-    gap: 12px;
-    flex-wrap: wrap;
-`;
-
-const Letter = styled.button`
-    width: 40px;
-    height: 40px;
-    background: #E1ECF4;;
-    border: 1px solid #7AA7C7;
-    border-radius: 3px;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-size: 16px;
-    font-weight: 700;
-    color: #39739D;
-    cursor: pointer;
-`;
-
-const Letra = ({ gameOn, letter }) => {
-    console.log(gameOn);
-    const [clicked, setClicked] = useState(!gameOn);
     return (
         <Letter
+            onClick={() => {
+                handleChoice(letter);
+            }}
             disabled={clicked}
-            onClick={() => setClicked(true)}
             style={clicked ?
                 {
                     background: "#9FAAB5",
@@ -47,14 +34,25 @@ const Letra = ({ gameOn, letter }) => {
     )
 };
 
-const Letras = ({ gameOn }) => {
+const Letras = ({ gameOn, handleChoice, lettersObj }) => {
+    const Wrapper = styled.div`
+        display: flex;
+        justify: flex-start;
+        width: 665px;
+        height: 95px;
+        margin: 0 auto;
+        gap: 12px;
+        flex-wrap: wrap;
+    `;
     return (
         <Wrapper>
-            {alfabeto.map((letter, index) => (
+            {lettersObj.map((letterObj, index) => (
                 <Letra
                     gameOn={gameOn}
-                    letter={letter}
-                    key={`${letter}-${index}`}
+                    handleChoice={handleChoice}
+                    letter={letterObj.letter}
+                    clicked={letterObj.clicked}
+                    key={`${letterObj.letter}-${index}`}
                 />
             ))}
         </Wrapper>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 
 // Styled-Components
@@ -6,6 +6,8 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-item: flex-start;
+
+    position: relative;
 
     width: 90%;
 
@@ -34,11 +36,50 @@ const BtnStart = styled.button`
 `;
 
 // Components
-const Jogo = ({ currentImg }) => {
+const Jogo = ({ gameOn, shuffleWords, currentImg, foundLetters, hasWon, hasLost }) => {
+    const SecretWordWrapper = styled.div`
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        
+        width: fit-content;
+        height: 70px;
+
+        position: fixed;
+        bottom: 25%;
+        right: 15%;
+
+        gap: 15px;
+    `;
+    const Letter = styled.div`
+        font-family: 'Noto Sans';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 50px;
+        text-align: center;
+
+        color: ${hasWon
+            ? "rgba(39, 174, 96, 1)"
+            : hasLost ? "rgba(255, 0, 0, 1)" : "rgba(0, 0, 0, 1)"
+        };
+    `;
     return (
         <Wrapper>
-            <ImgHang src={currentImg} alt="img" />
-            <BtnStart>Escolher Palavra</BtnStart>
+            <ImgHang
+                src={currentImg}
+                alt="img"
+            />
+            <BtnStart
+                disabled={gameOn && !(hasLost || hasWon)}
+                onClick={() => (hasLost || hasWon) ? window.location.reload() : shuffleWords()}
+            >Escolher Palavra</BtnStart>
+            {(gameOn || hasWon || hasLost) && <SecretWordWrapper>
+                {foundLetters.map((letter, index) => (
+                    <Letter key={`${letter}-${index}`}>
+                        {letter}
+                    </Letter>
+                ))}
+            </SecretWordWrapper>}
         </Wrapper>
     )
 }
