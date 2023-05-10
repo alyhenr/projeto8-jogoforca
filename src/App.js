@@ -6,15 +6,12 @@ import Chute from './Components/Chute';
 import palavras from './palavras';
 import imgsArr from './imgs';
 
-const alfabeto = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
-  "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-const letters = alfabeto.map(letter => ({ letter: letter, clicked: false }));
 let secretWord = "";
 let hasWon = false, hasLost = false;
 
 function App() {
   const [gameOn, setGameOn] = useState(false);
-  const [lettersObj, setLettersObj] = useState([...letters]);
+  const [clickedLetters, setClickedLetters] = useState([]);
   const [foundLetters, setFoundLetters] = useState(["placeholder"]);
   const [wrongChoices, setWrongChoices] = useState(0);
 
@@ -59,9 +56,9 @@ function App() {
 
   const shuffleWords = () => {
     if (gameOn || hasLost || hasWon) {
-      setLettersObj([...letters]);
       setWrongChoices(0);
       setGameOn(false);
+      setClickedLetters([]);
       hasLost = false;
       hasWon = false;
     }
@@ -72,16 +69,6 @@ function App() {
   };
 
   const handleChoice = (letter) => {
-    setLettersObj(prevState => (
-      prevState.map(letterObj => {
-        const copy = { ...letterObj }
-        if (copy.letter === letter) {
-          copy.clicked = true;
-        }
-        return copy;
-      }))
-    );
-
     if (secretWord.normalize('NFD').split('').includes(letter)) {
       setFoundLetters(secretWord.split('').map((c, i) => {
         if (c.normalize('NFD').split("")[0] === letter) {
@@ -111,7 +98,8 @@ function App() {
       <Letras
         gameOn={gameOn}
         handleChoice={handleChoice}
-        lettersObj={lettersObj}
+        clickedLetters={clickedLetters}
+        setClickedLetters={setClickedLetters}
       />
       <Chute gameOn={gameOn} guessWord={guessWord} />
     </>

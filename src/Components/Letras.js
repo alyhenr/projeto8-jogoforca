@@ -1,6 +1,9 @@
 import React from 'react';
 import { styled } from 'styled-components';
 
+const alfabeto = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+    "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
 const Wrapper = styled.div`
     display: flex;
     justify: flex-start;
@@ -11,7 +14,7 @@ const Wrapper = styled.div`
     flex-wrap: wrap;
 `;
 
-const Letra = ({ gameOn, handleChoice, letter, clicked }) => {
+const Letra = ({ gameOn, handleChoice, letter, clickedLetters, setClickedLetters }) => {
     const Letter = styled.button`
         width: 40px;
         height: 40px;
@@ -25,14 +28,16 @@ const Letra = ({ gameOn, handleChoice, letter, clicked }) => {
         color: ${gameOn ? "#39739D" : "#798A9F"};
         cursor: pointer;
     `;
+
     return (
         <Letter
             data-test="letter"
             onClick={() => {
                 handleChoice(letter);
+                setClickedLetters(prevState => [...prevState, letter]);
             }}
-            disabled={gameOn ? clicked : !gameOn}
-            style={clicked ?
+            disabled={gameOn ? clickedLetters.includes(letter) : !gameOn}
+            style={clickedLetters.includes(letter) ?
                 {
                     background: "#9FAAB5",
                     color: "#798A9F"
@@ -44,16 +49,17 @@ const Letra = ({ gameOn, handleChoice, letter, clicked }) => {
     )
 };
 
-const Letras = ({ gameOn, handleChoice, lettersObj }) => {
+const Letras = ({ gameOn, handleChoice, clickedLetters, setClickedLetters }) => {
     return (
         <Wrapper>
-            {lettersObj.map((letterObj, index) => (
+            {alfabeto.map((letter, index) => (
                 <Letra
                     gameOn={gameOn}
                     handleChoice={handleChoice}
-                    letter={letterObj.letter}
-                    clicked={letterObj.clicked}
-                    key={`${letterObj.letter}-${index}`}
+                    letter={letter}
+                    clickedLetters={clickedLetters}
+                    setClickedLetters={setClickedLetters}
+                    key={`${letter}-${index}`}
                 />
             ))}
         </Wrapper>
