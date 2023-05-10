@@ -7,13 +7,13 @@ import imgsArr from './imgs';
 
 const alfabeto = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
   "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-const letters = alfabeto.map(letter => ({ letter: letter, clicked: false }))
+const letters = alfabeto.map(letter => ({ letter: letter, clicked: false }));
 let secretWord = "";
 let hasWon = false, hasLost = false;
 
 function App() {
   const [gameOn, setGameOn] = useState(false);
-  const [lettersObj, setLettersObj] = useState(letters);
+  const [lettersObj, setLettersObj] = useState([...letters]);
   const [foundLetters, setFoundLetters] = useState(["placeholder"]);
   const [wrongChoices, setWrongChoices] = useState(0);
 
@@ -33,6 +33,13 @@ function App() {
   };
 
   const shuffleWords = () => {
+    if (gameOn || hasLost || hasWon) {
+      setLettersObj([...letters]);
+      setWrongChoices(0);
+      setGameOn(false);
+      hasLost = false;
+      hasWon = false;
+    }
     secretWord = palavras[Math.floor(Math.random() * (palavras.length - 1))];
     setGameOn(true);
     setFoundLetters(Array(secretWord.length).fill("_"));
@@ -40,14 +47,15 @@ function App() {
   };
 
   const handleChoice = (letter) => {
-    setLettersObj(prevState => {
-      return prevState.map(letterObj => {
-        if (letterObj.letter === letter) {
-          letterObj.clicked = true;
+    setLettersObj(prevState => (
+      prevState.map(letterObj => {
+        const copy = { ...letterObj }
+        if (copy.letter === letter) {
+          copy.clicked = true;
         }
-        return letterObj
-      });
-    });
+        return copy;
+      }))
+    );
 
     if (secretWord.split('').includes(letter)) {
       setFoundLetters(secretWord.split('').map((c, i) => {

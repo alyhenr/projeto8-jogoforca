@@ -1,6 +1,16 @@
 import React from 'react';
 import { styled } from 'styled-components';
 
+const Wrapper = styled.div`
+    display: flex;
+    justify: flex-start;
+    width: 665px;
+    height: 95px;
+    margin: 0 auto;
+    gap: 12px;
+    flex-wrap: wrap;
+`;
+
 const Letra = ({ gameOn, handleChoice, letter, clicked }) => {
     const Letter = styled.button`
         width: 40px;
@@ -15,9 +25,9 @@ const Letra = ({ gameOn, handleChoice, letter, clicked }) => {
         color: ${gameOn ? "#39739D" : "#798A9F"};
         cursor: pointer;
     `;
-
     return (
         <Letter
+            data-test="letter"
             onClick={() => {
                 handleChoice(letter);
             }}
@@ -35,15 +45,6 @@ const Letra = ({ gameOn, handleChoice, letter, clicked }) => {
 };
 
 const Letras = ({ gameOn, handleChoice, lettersObj }) => {
-    const Wrapper = styled.div`
-        display: flex;
-        justify: flex-start;
-        width: 665px;
-        height: 95px;
-        margin: 0 auto;
-        gap: 12px;
-        flex-wrap: wrap;
-    `;
     return (
         <Wrapper>
             {lettersObj.map((letterObj, index) => (

@@ -35,22 +35,23 @@ const BtnStart = styled.button`
 
 `;
 
+const SecretWordWrapper = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    
+    width: fit-content;
+    height: 70px;
+
+    position: absolute;
+    bottom: 15%;
+    right: 0;
+
+    gap: 15px;
+`;
+
 // Components
 const Jogo = ({ gameOn, shuffleWords, currentImg, foundLetters, hasWon, hasLost }) => {
-    const SecretWordWrapper = styled.div`
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-end;
-        
-        width: fit-content;
-        height: 70px;
-
-        position: fixed;
-        bottom: 25%;
-        right: 15%;
-
-        gap: 15px;
-    `;
     const Letter = styled.div`
         font-family: 'Noto Sans';
         font-style: normal;
@@ -66,14 +67,15 @@ const Jogo = ({ gameOn, shuffleWords, currentImg, foundLetters, hasWon, hasLost 
     return (
         <Wrapper>
             <ImgHang
+                data-test="game-image"
                 src={currentImg}
                 alt="img"
             />
             <BtnStart
-                disabled={gameOn && !(hasLost || hasWon)}
-                onClick={() => (hasLost || hasWon) ? window.location.reload() : shuffleWords()}
+                data-test="choose-word"
+                onClick={() => shuffleWords()}
             >Escolher Palavra</BtnStart>
-            {(gameOn || hasWon || hasLost) && <SecretWordWrapper>
+            {(gameOn || hasWon || hasLost) && <SecretWordWrapper data-test="word">
                 {foundLetters.map((letter, index) => (
                     <Letter key={`${letter}-${index}`}>
                         {letter}
