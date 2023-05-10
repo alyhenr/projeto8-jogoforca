@@ -31,7 +31,7 @@ const Letra = ({ gameOn, handleChoice, letter, clicked }) => {
             onClick={() => {
                 handleChoice(letter);
             }}
-            disabled={clicked}
+            disabled={gameOn ? clicked : !gameOn}
             style={clicked ?
                 {
                     background: "#9FAAB5",

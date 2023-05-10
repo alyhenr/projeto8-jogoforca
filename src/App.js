@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import Letras from "./Components/Letras";
 import Jogo from "./Components/Jogo";
+import Chute from './Components/Chute';
 import palavras from './palavras';
 import imgsArr from './imgs';
 
@@ -17,19 +18,43 @@ function App() {
   const [foundLetters, setFoundLetters] = useState(["placeholder"]);
   const [wrongChoices, setWrongChoices] = useState(0);
 
+  const finishGame = (result) => {
+    switch (result) {
+      case 'win':
+        hasWon = true;
+        setGameOn(false);
+        setFoundLetters(["placeholder"]);
+        break;
+      case 'loss':
+        hasLost = true;
+        setGameOn(false);
+        setFoundLetters(["placeholder"]);
+        setWrongChoices(0);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // If the user tries to guess the word
+  const guessWord = (word) => {
+    if (word
+      ===
+      secretWord.split("").map(c => c.normalize('NFD')[0]).join("")) {
+      finishGame('win');
+    } else {
+      finishGame('loss');
+    }
+  };
+
   // Check if the user has discovered the secret word
   if (foundLetters.join("") === secretWord) {
-    hasWon = true;
-    setGameOn(false);
-    setFoundLetters(["placeholder"]);
+    finishGame('win');
   };
 
   // Check if the user has lost
   if (wrongChoices === imgsArr.length - 1) {
-    hasLost = true;
-    setGameOn(false);
-    setFoundLetters(["placeholder"]);
-    setWrongChoices(0);
+    finishGame('loss');
   };
 
   const shuffleWords = () => {
@@ -57,9 +82,9 @@ function App() {
       }))
     );
 
-    if (secretWord.split('').includes(letter)) {
+    if (secretWord.normalize('NFD').split('').includes(letter)) {
       setFoundLetters(secretWord.split('').map((c, i) => {
-        if (c === letter) {
+        if (c.normalize('NFD').split("")[0] === letter) {
           return c;
         } else if (foundLetters[i] !== "_") {
           return foundLetters[i];
@@ -88,6 +113,7 @@ function App() {
         handleChoice={handleChoice}
         lettersObj={lettersObj}
       />
+      <Chute gameOn={gameOn} guessWord={guessWord} />
     </>
   );
 }

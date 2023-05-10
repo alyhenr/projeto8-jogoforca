@@ -9,9 +9,9 @@ const Wrapper = styled.div`
 
     position: relative;
 
-    width: 90%;
+    width: 90%;    
 
-    margin: 60px 40px;
+    margin: 20px 40px;
 `;
 
 const ImgHang = styled.img`
