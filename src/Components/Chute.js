@@ -29,8 +29,10 @@ const Chute = ({ gameOn, guessWord }) => {
             }}>Já sei a palavra!</h1>
             <input
                 data-test="guess-input"
+                disabled={!gameOn}
                 type="text"
                 onChange={(e) => setInputValue(e.target.value)}
+                value={inputValue}
                 style={{
                     width: "360px",
                     height: "40px",
@@ -42,8 +44,11 @@ const Chute = ({ gameOn, guessWord }) => {
             />
             <button
                 data-test="guess-button"
-                onClick={() => guessWord(inputValue.toLowerCase())}
                 disabled={!gameOn}
+                onClick={() => {
+                    guessWord(inputValue.toLowerCase());
+                    setInputValue("");
+                }}
                 style={{
                     width: "100px",
                     height: "40px",
