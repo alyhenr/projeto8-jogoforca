@@ -6,31 +6,32 @@ const alfabeto = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
 
 const Wrapper = styled.div`
     display: flex;
-    justify: flex-start;
+    justify-content: flex-start;
     width: 665px;
     height: 95px;
     margin: 0 auto;
     gap: 12px;
     flex-wrap: wrap;
 `;
+const Letter = styled(({ gameOn, ...props }) => <button {...props} />)`
+    width: 40px;
+    height: 40px;
+    background: ${props => props.gameOn ? "#E1ECF4" : "#9FAAB5"};
+    border: 1px solid #7AA7C7;
+    border-radius: 3px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 700;
+    color: ${props => props.gameOn ? "#39739D" : "#798A9F"};
+    cursor: pointer;        
+`;
 
 const Letra = ({ gameOn, handleChoice, letter, clickedLetters, setClickedLetters }) => {
-    const Letter = styled.button`
-        width: 40px;
-        height: 40px;
-        background: ${gameOn ? "#E1ECF4" : "#9FAAB5"};
-        border: 1px solid #7AA7C7;
-        border-radius: 3px;
-        font-family: 'Roboto';
-        font-style: normal;
-        font-size: 16px;
-        font-weight: 700;
-        color: ${gameOn ? "#39739D" : "#798A9F"};
-        cursor: pointer;
-    `;
 
     return (
         <Letter
+            gameOn={gameOn}
             data-test="letter"
             onClick={() => {
                 handleChoice(letter);

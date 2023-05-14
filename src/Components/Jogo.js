@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
-    align-item: flex-start;
+    align-items: flex-start;
 
     position: relative;
 
@@ -49,21 +49,21 @@ const SecretWordWrapper = styled.div`
 
     gap: 15px;
 `;
+const Letter = styled(({ hasWon, hasLost, ...props }) => <div {...props} />)`
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 50px;
+    text-align: center;
+
+    color: ${props => props.hasWon
+        ? "rgba(39, 174, 96, 1)"
+        : props.hasLost ? "rgba(255, 0, 0, 1)" : "rgba(0, 0, 0, 1)"
+    };
+`;
 
 // Components
 const Jogo = ({ gameOn, shuffleWords, currentImg, foundLetters, hasWon, hasLost }) => {
-    const Letter = styled.div`
-        font-family: 'Noto Sans';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 50px;
-        text-align: center;
-
-        color: ${hasWon
-            ? "rgba(39, 174, 96, 1)"
-            : hasLost ? "rgba(255, 0, 0, 1)" : "rgba(0, 0, 0, 1)"
-        };
-    `;
     return (
         <Wrapper>
             <ImgHang
@@ -77,7 +77,7 @@ const Jogo = ({ gameOn, shuffleWords, currentImg, foundLetters, hasWon, hasLost 
             >Escolher Palavra</BtnStart>
             {(gameOn || hasWon || hasLost) && <SecretWordWrapper data-test="word">
                 {foundLetters.map((letter, index) => (
-                    <Letter key={`${letter}-${index}`}>
+                    <Letter key={`${letter}-${index}`} hasWon={hasWon} hasLost={hasLost}>
                         {letter}
                     </Letter>
                 ))}

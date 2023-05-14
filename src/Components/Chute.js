@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 const Wrapper = styled.div`
     display: flex;
     justify-content: center;
-    align-item: flex-start;
+    align-items: flex-start;
     gap: 15px;
 
     position: relative;
@@ -32,6 +32,13 @@ const Chute = ({ gameOn, guessWord }) => {
                 disabled={!gameOn}
                 type="text"
                 onChange={(e) => setInputValue(e.target.value)}
+                onKeyUp={(e) => {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        guessWord(inputValue.toLowerCase());
+                        setInputValue("");
+                    }
+                }}
                 value={inputValue}
                 style={{
                     width: "360px",
